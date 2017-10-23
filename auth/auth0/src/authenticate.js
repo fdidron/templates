@@ -6,28 +6,25 @@ const logger = message => (process.env.DEBUG === true ? logger(message) : null);
 
 const getGraphcoolUser = (auth0UserId, api) =>
   api
-    .request(
-      `
-    query {
-      User(auth0UserId: "${auth0UserId}"){
-        id
+  .request(`
+      query {
+        User(auth0UserId: "${auth0UserId}"){
+          id
+        }
       }
-    }
-  `
-    )
-    .then(queryResult => queryResult.User);
+  `)
+  .then(queryResult => queryResult.User);
 
 const fetchAuth0Profile = accessToken =>
   fetch(
     `https://${process.env.AUTH0_DOMAIN}/userinfo?access_token=${accessToken}`
   )
-    .then(response => response.json())
-    .then(json => json);
+  .then(response => response.json())
+  .then(json => json);
 
 const createGraphCoolUser = ({ email }, api) => {
   return api
-    .request(
-      `
+  .request(`
     mutation {
       createUser(
         auth0UserId:"${user_id}"
@@ -36,9 +33,8 @@ const createGraphCoolUser = ({ email }, api) => {
         id
       }
     }
-  `
-    )
-    .then(queryResult => queryResult.createUser);
+  `)
+  .then(queryResult => queryResult.createUser);
 };
 
 module.exports = event => {
